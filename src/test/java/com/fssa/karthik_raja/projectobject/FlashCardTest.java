@@ -7,12 +7,39 @@ import org.junit.jupiter.api.Test;
  * 
  * @author KarthikRajaPooraja 
  * writing testcases for flashcard validator class.
- * Class FlashCardTest consists of first 4 test cases to test the true
- *         values (only valid inputs)
+ * Class FlashCardTest consists of 18 Unit Test cases
+ * First one is to validate all valid inputs and checking whether it return true or not 
+ * Next five for validateWord method in FlashCardValidator class (valid and 4 invalid inputs);
+ * Next four for validateMeaning  method in FlashCardValidator class (valid and 3 invalid inputs);
+ * Next four for validateSynonym method in FlashCardValidator class (valid and 3 invalid inputs);
+ * Last four for validateExample method in FlashCardValidator class (valid and 3 invalid inputs);
  * 
  */
 public class FlashCardTest {
-	FlashCard word=new FlashCard();
+//	Instantiating FlashCard class as a object to FlashCardTest
+	FlashCard word = new FlashCard();
+
+	@Test
+	public void testValidateAllValidInputs() {
+	    word.setWord("Apple");
+	    word.setMeaning("It is a fruit");
+	    word.setSynonyms("Fruit,Eatables,Health");
+	    word.setExample("It is a nice toy");
+	    FlashCardValidator.validate(word);
+	    Assertions.assertTrue(true);
+	}
+	
+	@Test
+	public void testValidateNullInput() {
+        try {
+	    FlashCardValidator.validate(null);
+        }
+        catch(IllegalArgumentException ab) {
+        	Assertions.assertEquals("Argument is NULL",ab.getMessage());
+        }
+	    
+	}
+
 	@Test
 	void validateValidWord() {	
 		word.setWord("Intermediate");
@@ -167,6 +194,16 @@ public class FlashCardTest {
 //			Assertions.fail("Capital letter validation is not performed (Meaning)");
 		} catch (IllegalArgumentException ex) {
 			Assertions.assertEquals("Example must start with an uppercase letter.", ex.getMessage());
+		}
+	}
+	@Test
+	void validateInvalidExampleThree() {
+		try {
+			word.setExample("It is a nice toy@@");
+			FlashCardValidator.validateExample(word.getExample());
+//			Assertions.fail("Capital letter validation is not performed (Meaning)");
+		} catch (IllegalArgumentException ex) {
+			Assertions.assertEquals("Example input should not contain any special characters", ex.getMessage());
 		}
 	}
 	
